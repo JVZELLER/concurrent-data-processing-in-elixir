@@ -1,2 +1,3 @@
-# concurrent-data-processing-in-elixir
-Practice project from Concurrent Data Processing in Elixir book
+# Concurrent Data Processing In Elixir
+
+Practice project from Concurrent Data Processing in Elixir book.
