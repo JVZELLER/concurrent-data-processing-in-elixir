@@ -25,13 +25,7 @@ defmodule SendServer do
   def handle_cast({:send, email}, state) do
     email
     |> Sender.send_email()
-    |> case do
-      {:ok, "email_sent"} ->
-        "send"
-
-      :error ->
-        "failed"
-    end
+    |> get_send_email_status()
     |> then(&[%{email: email, status: &1, retries: 0} | state.emails])
     |> then(&{:noreply, %{state | emails: &1}})
   end
@@ -48,10 +42,9 @@ defmodule SendServer do
         IO.puts("Retrying email #{item.email}...")
 
         new_status =
-          case Sender.send_email(item.email) do
-            {:ok, "sent"} -> "sent"
-            :error -> "failed"
-          end
+          item.email
+          |> Sender.send_email()
+          |> get_send_email_status()
 
         %{email: item.email, status: new_status, retries: item.retries + 1}
       end)
@@ -65,6 +58,9 @@ defmodule SendServer do
   def terminate(reason, _state) do
     IO.puts("Terminating with reason #{reason}")
   end
+
+  defp get_send_email_status({:ok, "email_sent"}), do: "sent"
+  defp get_send_email_status(:error), do: "failed"
 
   defp schedule_retry, do: Process.send_after(self(), :retry, :timer.seconds(5))
 end
