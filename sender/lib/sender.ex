@@ -3,9 +3,8 @@ defmodule Sender do
   Documentation for `Sender`.
   """
 
-  @spec send_email(String.t()) :: {:ok, String.t()}
-  def send_email("konnichiwa@world.com" = email),
-    do: raise("Oops, couldn't send email to #{email}!")
+  @spec send_email(String.t()) :: {:ok, String.t()} | :error
+  def send_email("konnichiwa@world.com" = _email), do: :error
 
   def send_email(email) do
     3 |> :timer.seconds() |> Process.sleep()
