@@ -4,6 +4,9 @@ defmodule Sender do
   """
 
   @spec send_email(String.t()) :: {:ok, String.t()}
+  def send_email("konnichiwa@world.com" = email),
+    do: raise("Oops, couldn't send email to #{email}!")
+
   def send_email(email) do
     3 |> :timer.seconds() |> Process.sleep()
 
