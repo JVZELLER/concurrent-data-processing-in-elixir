@@ -1,13 +1,16 @@
 defmodule Jobber.Job do
   @moduledoc false
 
-  use GenServer
+  use GenServer, restart: :transient
 
   require Logger
 
   defstruct [:work, :id, :max_retries, retries: 0, status: "new"]
 
   @five_seconds_in_ms :timer.seconds(5)
+
+  @spec start_link(keyword()) :: GenServer.on_start()
+  def start_link(args), do: GenServer.start_link(__MODULE__, args)
 
   @impl true
   def init(args) do
