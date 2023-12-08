@@ -1,7 +1,7 @@
 sleep = fn n -> n |> :timer.seconds() |> Process.sleep() end
 
 good_job = fn ->
-  sleep.(5)
+  sleep.(60)
 
   {:ok, []}
 end
